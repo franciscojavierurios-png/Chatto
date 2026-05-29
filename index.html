@@ -2,57 +2,75 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-  <title>Chatto — Habla con lo que sea</title>
-  <meta name="description" content="Chatea con Dios, el Diablo, Einstein, una pizza o un aguacate. 10 mensajes gratis."/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <title>Talk2Me — Consulta lo desconocido</title>
+  <meta name="description" content="Habla con Dios, el Diablo, la Ouija y Nostradamus. 10 consultas gratis."/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --gold: #f5a623;
-      --gold-light: #fff8ee;
-      --gold-border: #f5a62340;
-      --bg: #f0f0ed;
-      --white: #ffffff;
-      --surface: #f5f5f3;
-      --border: #e0e0dc;
-      --border2: #d0d0cc;
-      --text: #1a1a1a;
-      --text2: #666;
-      --text3: #aaa;
-      --radius: 16px;
+      --void: #080608;
+      --deep: #0e0b0f;
+      --surface: #141016;
+      --raised: #1c1720;
+      --border: rgba(255,255,255,0.06);
+      --border2: rgba(255,255,255,0.1);
+      --text: #e8e0d5;
+      --text2: #9a8fa0;
+      --text3: #5a5060;
+
+      --god: #c9a84c;
+      --god-dim: rgba(201,168,76,0.12);
+      --devil: #c0392b;
+      --devil-dim: rgba(192,57,43,0.12);
+      --ouija: #4a9e8e;
+      --ouija-dim: rgba(74,158,142,0.12);
+      --nostra: #8e6ab0;
+      --nostra-dim: rgba(142,106,176,0.12);
     }
 
     html, body {
       height: 100%;
-      background: var(--bg);
+      background: var(--void);
       color: var(--text);
-      font-family: 'DM Sans', sans-serif;
+      font-family: 'Crimson Pro', serif;
       -webkit-font-smoothing: antialiased;
+      overflow: hidden;
     }
 
-    /* ── SHELL ── */
+    /* noise overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
     .shell {
       display: flex;
       flex-direction: column;
       height: 100dvh;
       width: 100%;
-      max-width: 430px;
+      max-width: 440px;
       margin: 0 auto;
-      background: var(--white);
+      background: var(--deep);
       position: relative;
       overflow: hidden;
+      z-index: 1;
     }
 
     @media (min-width: 500px) {
-      body { display: flex; align-items: center; justify-content: center; min-height: 100dvh; }
+      body { display: flex; align-items: center; justify-content: center; min-height: 100dvh; background: var(--void); }
       .shell {
-        height: min(800px, 95dvh);
-        border-radius: 24px;
-        box-shadow: 0 24px 64px rgba(0,0,0,0.13);
-        border: 1px solid var(--border);
+        height: min(820px, 95dvh);
+        border-radius: 2px;
+        border: 1px solid var(--border2);
+        box-shadow: 0 0 80px rgba(0,0,0,0.8), 0 0 160px rgba(0,0,0,0.4);
       }
     }
 
@@ -61,322 +79,475 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 14px 18px 12px;
-      background: var(--white);
+      padding: 16px 20px 14px;
+      background: var(--deep);
       border-bottom: 1px solid var(--border);
       flex-shrink: 0;
+      position: relative;
+    }
+
+    .header::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 20px; right: 20px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border2), transparent);
     }
 
     .logo {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: 22px;
-      letter-spacing: -0.5px;
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: 0.15em;
       color: var(--text);
+      text-transform: uppercase;
     }
-    .logo span { color: var(--gold); }
+
+    .logo-accent { color: var(--god); }
 
     .credits-pill {
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
       background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 20px;
+      border: 1px solid var(--border2);
+      border-radius: 2px;
       padding: 5px 12px;
-      font-size: 12px;
+      font-family: 'Crimson Pro', serif;
+      font-size: 13px;
       color: var(--text2);
       cursor: pointer;
-      transition: all 0.15s;
+      transition: all 0.2s;
+      letter-spacing: 0.05em;
     }
-    .credits-pill:hover { border-color: var(--gold); }
-    .credits-pill strong { color: var(--gold); font-family: 'Syne', sans-serif; font-size: 13px; }
+    .credits-pill:hover { border-color: var(--god); color: var(--god); }
+    .credits-pill strong { color: var(--god); font-weight: 600; }
 
-    /* ── CHARACTER SELECTOR ── */
-    .char-track-wrap {
-      background: var(--white);
+    /* ── ENTITY SELECTOR ── */
+    .entities {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
       border-bottom: 1px solid var(--border);
       flex-shrink: 0;
-      padding: 10px 0;
     }
 
-    .char-track {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      scroll-behavior: smooth;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-      padding: 2px 14px 2px;
-    }
-    .char-track::-webkit-scrollbar { display: none; }
-
-    .char-btn {
+    .entity-btn {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 4px;
-      padding: 8px 10px;
-      border-radius: 12px;
-      border: 1.5px solid var(--border);
-      background: var(--surface);
+      gap: 6px;
+      padding: 14px 8px 12px;
+      border: none;
+      border-right: 1px solid var(--border);
+      background: var(--deep);
       cursor: pointer;
-      transition: all 0.15s;
-      flex-shrink: 0;
-      min-width: 62px;
-      font-family: 'DM Sans', sans-serif;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
       -webkit-tap-highlight-color: transparent;
     }
-    .char-btn:hover { border-color: var(--border2); background: #ebebea; }
-    .char-btn.active { background: var(--gold-light); border-color: var(--gold); }
-    .char-emoji { font-size: 22px; line-height: 1; }
-    .char-label { font-size: 10px; color: var(--text2); font-weight: 500; white-space: nowrap; }
-    .char-btn.active .char-label { color: #c47d0a; font-weight: 600; }
+
+    .entity-btn:last-child { border-right: none; }
+
+    .entity-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .entity-btn[data-id="god"]::before    { background: var(--god-dim); }
+    .entity-btn[data-id="devil"]::before  { background: var(--devil-dim); }
+    .entity-btn[data-id="ouija"]::before  { background: var(--ouija-dim); }
+    .entity-btn[data-id="nostra"]::before { background: var(--nostra-dim); }
+
+    .entity-btn:hover::before,
+    .entity-btn.active::before { opacity: 1; }
+
+    .entity-btn.active[data-id="god"]    { border-bottom: 2px solid var(--god); }
+    .entity-btn.active[data-id="devil"]  { border-bottom: 2px solid var(--devil); }
+    .entity-btn.active[data-id="ouija"]  { border-bottom: 2px solid var(--ouija); }
+    .entity-btn.active[data-id="nostra"] { border-bottom: 2px solid var(--nostra); }
+
+    .entity-glyph {
+      font-size: 22px;
+      line-height: 1;
+      filter: grayscale(0.3);
+      transition: filter 0.2s, transform 0.2s;
+      position: relative;
+      z-index: 1;
+    }
+    .entity-btn:hover .entity-glyph,
+    .entity-btn.active .entity-glyph { filter: grayscale(0) drop-shadow(0 0 6px currentColor); transform: scale(1.05); }
+
+    .entity-name {
+      font-family: 'Cinzel', serif;
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      color: var(--text3);
+      text-transform: uppercase;
+      position: relative;
+      z-index: 1;
+      transition: color 0.2s;
+    }
+    .entity-btn.active[data-id="god"]    .entity-name { color: var(--god); }
+    .entity-btn.active[data-id="devil"]  .entity-name { color: var(--devil); }
+    .entity-btn.active[data-id="ouija"]  .entity-name { color: var(--ouija); }
+    .entity-btn.active[data-id="nostra"] .entity-name { color: var(--nostra); }
 
     /* ── CHAT ── */
     .chat {
       flex: 1;
       overflow-y: auto;
-      padding: 16px 14px;
+      padding: 20px 16px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      background: var(--bg);
+      gap: 16px;
+      background: var(--deep);
       -webkit-overflow-scrolling: touch;
       scrollbar-width: thin;
-      scrollbar-color: var(--border2) transparent;
+      scrollbar-color: var(--raised) transparent;
     }
 
-    /* intro */
+    /* INTRO */
     .intro {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      gap: 10px;
-      padding: 32px 20px;
+      gap: 14px;
+      padding: 40px 24px;
       flex: 1;
       min-height: 200px;
-      animation: fadeUp 0.3s ease;
-    }
-    .intro-emoji { font-size: 56px; line-height: 1; }
-    .intro-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 22px; color: var(--text); }
-    .intro-desc { font-size: 14px; color: var(--text2); max-width: 260px; line-height: 1.6; }
-    .intro-hint {
-      margin-top: 6px;
-      font-size: 12px;
-      color: var(--text3);
-      background: var(--white);
-      border: 1px solid var(--border2);
-      border-radius: 20px;
-      padding: 5px 16px;
+      animation: materialize 0.6s ease;
     }
 
-    /* messages */
-    .msg { display: flex; gap: 8px; animation: fadeUp 0.2s ease; }
-    .msg.user { flex-direction: row-reverse; }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(8px); }
+    @keyframes materialize {
+      from { opacity: 0; transform: translateY(16px); }
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    .avatar {
-      width: 32px; height: 32px;
-      border-radius: 50%;
+    .intro-sigil {
+      font-size: 56px;
+      line-height: 1;
+      filter: drop-shadow(0 0 16px var(--accent-color, #c9a84c));
+      animation: pulse 4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { filter: drop-shadow(0 0 16px var(--accent-color, #c9a84c)); }
+      50%       { filter: drop-shadow(0 0 28px var(--accent-color, #c9a84c)); }
+    }
+
+    .intro-title {
+      font-family: 'Cinzel', serif;
+      font-weight: 600;
+      font-size: 20px;
+      letter-spacing: 0.1em;
+      color: var(--accent-color, var(--god));
+    }
+
+    .intro-lore {
+      font-size: 16px;
+      font-style: italic;
+      color: var(--text2);
+      max-width: 260px;
+      line-height: 1.7;
+    }
+
+    .intro-divider {
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent-color, var(--god)), transparent);
+    }
+
+    .intro-prompt {
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--text3);
+      text-transform: uppercase;
+    }
+
+    /* MESSAGES */
+    .msg { display: flex; gap: 10px; animation: materialize 0.25s ease; }
+    .msg.user { flex-direction: row-reverse; }
+
+    .av {
+      width: 34px; height: 34px;
+      border-radius: 2px;
       display: flex; align-items: center; justify-content: center;
       font-size: 16px; flex-shrink: 0; margin-top: 2px;
       background: var(--surface);
-    }
-    .msg.user .avatar {
-      background: var(--gold-light);
-      font-size: 10px; font-weight: 700;
-      color: var(--gold);
-      font-family: 'Syne', sans-serif;
+      border: 1px solid var(--border);
     }
 
-    .msg-col { display: flex; flex-direction: column; gap: 2px; max-width: 76%; }
+    .msg.user .av {
+      background: var(--raised);
+      font-family: 'Cinzel', serif;
+      font-size: 8px;
+      letter-spacing: 0.1em;
+      color: var(--text3);
+    }
+
+    .msg-col { display: flex; flex-direction: column; gap: 3px; max-width: 78%; }
     .msg.user .msg-col { align-items: flex-end; }
 
-    .msg-name { font-size: 11px; color: var(--text3); padding: 0 3px; }
+    .msg-from {
+      font-family: 'Cinzel', serif;
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      color: var(--text3);
+      text-transform: uppercase;
+      padding: 0 3px;
+    }
 
     .bubble {
-      padding: 10px 13px;
-      border-radius: 14px;
-      font-size: 14px;
-      line-height: 1.55;
+      padding: 11px 14px;
+      font-size: 15px;
+      line-height: 1.65;
+      font-style: italic;
     }
-    .msg.bot .bubble { background: var(--white); color: var(--text); border-bottom-left-radius: 4px; border: 1px solid var(--border); }
-    .msg.user .bubble { background: var(--gold); color: #fff; font-weight: 500; border-bottom-right-radius: 4px; }
 
-    /* typing */
-    .typing { display: flex; gap: 8px; animation: fadeUp 0.2s ease; }
-    .typing-bubble {
-      background: var(--white);
+    .msg.bot .bubble {
+      background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 14px;
-      border-bottom-left-radius: 4px;
-      padding: 12px 14px;
-      display: flex; gap: 5px; align-items: center;
-    }
-    .dot { width: 6px; height: 6px; background: var(--text3); border-radius: 50%; animation: bounce 1.2s infinite; }
-    .dot:nth-child(2) { animation-delay: 0.2s; }
-    .dot:nth-child(3) { animation-delay: 0.4s; }
-    @keyframes bounce {
-      0%,60%,100% { transform: translateY(0); background: var(--text3); }
-      30% { transform: translateY(-5px); background: var(--gold); }
+      border-bottom-left-radius: 0;
+      color: var(--text);
     }
 
-    /* ── INPUT BAR ── */
+    .msg.user .bubble {
+      background: var(--raised);
+      border: 1px solid var(--border2);
+      border-bottom-right-radius: 0;
+      color: var(--text);
+      font-style: normal;
+    }
+
+    /* accent borders per entity */
+    .msg.bot.god-msg    .bubble { border-left: 2px solid var(--god); }
+    .msg.bot.devil-msg  .bubble { border-left: 2px solid var(--devil); }
+    .msg.bot.ouija-msg  .bubble { border-left: 2px solid var(--ouija); }
+    .msg.bot.nostra-msg .bubble { border-left: 2px solid var(--nostra); }
+
+    /* TYPING */
+    .typing { display: flex; gap: 10px; animation: materialize 0.2s ease; }
+    .typing-bubble {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 14px 16px;
+      display: flex; gap: 6px; align-items: center;
+    }
+    .dot { width: 5px; height: 5px; background: var(--text3); border-radius: 50%; animation: flicker 1.4s infinite; }
+    .dot:nth-child(2) { animation-delay: 0.25s; }
+    .dot:nth-child(3) { animation-delay: 0.5s; }
+    @keyframes flicker {
+      0%,60%,100% { opacity: 0.3; transform: scale(1); }
+      30% { opacity: 1; transform: scale(1.2); background: var(--accent-color, var(--god)); }
+    }
+
+    /* ── INPUT ── */
     .input-bar {
       display: flex;
       align-items: flex-end;
-      gap: 8px;
-      padding: 10px 12px;
-      background: var(--white);
+      gap: 10px;
+      padding: 12px 14px;
+      background: var(--deep);
       border-top: 1px solid var(--border);
       flex-shrink: 0;
+      position: relative;
+    }
+
+    .input-bar::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 20px; right: 20px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border2), transparent);
     }
 
     .msg-input {
       flex: 1;
       background: var(--surface);
-      border: 1.5px solid var(--border2);
-      border-radius: 12px;
-      padding: 10px 13px;
+      border: 1px solid var(--border2);
+      padding: 11px 14px;
       color: var(--text);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 15px;
+      font-family: 'Crimson Pro', serif;
+      font-size: 16px;
       resize: none;
       max-height: 100px;
       outline: none;
-      transition: border-color 0.15s;
+      transition: border-color 0.2s;
       line-height: 1.4;
+      border-radius: 2px;
       -webkit-appearance: none;
     }
-    .msg-input::placeholder { color: var(--text3); }
-    .msg-input:focus { border-color: var(--gold); }
+    .msg-input::placeholder { color: var(--text3); font-style: italic; }
+    .msg-input:focus { border-color: var(--accent-color, var(--god)); }
 
     .send-btn {
-      width: 42px; height: 42px;
-      min-width: 42px;
-      background: var(--gold);
-      border: none;
-      border-radius: 12px;
+      width: 44px; height: 44px;
+      min-width: 44px;
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: 2px;
       cursor: pointer;
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
-      transition: all 0.15s;
+      transition: all 0.2s;
+      color: var(--text2);
       -webkit-tap-highlight-color: transparent;
     }
-    .send-btn:hover { background: #e89620; }
+    .send-btn:hover { background: var(--raised); border-color: var(--accent-color, var(--god)); color: var(--accent-color, var(--god)); }
     .send-btn:active { transform: scale(0.94); }
-    .send-btn:disabled { background: var(--border2); cursor: not-allowed; transform: none; }
-    .send-btn svg { width: 18px; height: 18px; fill: #fff; }
+    .send-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
+    .send-btn svg { width: 18px; height: 18px; fill: currentColor; }
 
     /* ── PAYWALL ── */
     .paywall {
       display: none;
       position: absolute; inset: 0;
-      background: rgba(240,240,237,0.95);
-      backdrop-filter: blur(8px);
+      background: rgba(8,6,8,0.96);
+      backdrop-filter: blur(10px);
       z-index: 100;
       align-items: center; justify-content: center;
-      padding: 20px;
-      animation: fadeUp 0.25s ease;
+      padding: 24px;
+      animation: materialize 0.3s ease;
     }
     .paywall.show { display: flex; }
 
     .pw-card {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      padding: 28px 22px;
+      background: var(--deep);
+      border: 1px solid var(--border2);
+      padding: 32px 24px;
       text-align: center;
       width: 100%;
       max-width: 340px;
+      position: relative;
     }
-    .pw-emoji { font-size: 40px; margin-bottom: 10px; }
-    .pw-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 20px; color: var(--text); margin-bottom: 6px; }
-    .pw-sub { font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 20px; }
 
-    .plans { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+    .pw-card::before, .pw-card::after {
+      content: '✦';
+      position: absolute;
+      font-size: 10px;
+      color: var(--text3);
+    }
+    .pw-card::before { top: 10px; left: 14px; }
+    .pw-card::after  { bottom: 10px; right: 14px; }
+
+    .pw-sigil { font-size: 44px; margin-bottom: 14px; display: block; }
+    .pw-title {
+      font-family: 'Cinzel', serif;
+      font-weight: 600;
+      font-size: 18px;
+      letter-spacing: 0.1em;
+      color: var(--text);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .pw-sub { font-size: 15px; font-style: italic; color: var(--text2); line-height: 1.7; margin-bottom: 24px; }
+
+    .plans { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 18px; }
 
     .plan {
       background: var(--surface);
-      border: 1.5px solid var(--border);
-      border-radius: 14px;
-      padding: 14px 10px;
-      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      border: 1px solid var(--border);
+      padding: 16px 10px;
+      display: flex; flex-direction: column; align-items: center; gap: 5px;
     }
-    .plan.hot { background: var(--gold-light); border-color: var(--gold); }
 
-    .plan-badge { font-size: 10px; font-weight: 600; color: var(--gold); background: rgba(245,166,35,0.15); border-radius: 20px; padding: 3px 10px; }
-    .plan-space { height: 20px; }
-    .plan-price { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 26px; color: var(--text); line-height: 1; }
-    .plan-name { font-size: 12px; font-weight: 600; color: var(--text2); }
-    .plan-desc { font-size: 11px; color: var(--text3); line-height: 1.5; text-align: center; margin: 4px 0 8px; }
+    .plan.chosen { border-color: var(--god); background: rgba(201,168,76,0.06); }
+
+    .plan-tag {
+      font-family: 'Cinzel', serif;
+      font-size: 8px;
+      letter-spacing: 0.15em;
+      color: var(--god);
+      text-transform: uppercase;
+    }
+    .plan-space { height: 16px; }
+    .plan-price { font-family: 'Cinzel', serif; font-weight: 700; font-size: 26px; color: var(--text); line-height: 1; }
+    .plan-name { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 0.1em; color: var(--text2); text-transform: uppercase; }
+    .plan-desc { font-size: 12px; font-style: italic; color: var(--text3); line-height: 1.5; text-align: center; margin: 4px 0 10px; }
 
     .plan-btn {
       width: 100%;
-      background: var(--white);
+      background: var(--raised);
       color: var(--text2);
-      border: 1.5px solid var(--border2);
-      border-radius: 9px;
+      border: 1px solid var(--border2);
       padding: 9px 8px;
-      font-family: 'Syne', sans-serif; font-weight: 700; font-size: 12px;
-      cursor: pointer; transition: all 0.15s;
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+      border-radius: 1px;
     }
-    .plan-btn:hover { border-color: var(--text2); color: var(--text); }
-    .plan-btn.gold-btn { background: var(--gold); color: #fff; border-color: var(--gold); }
-    .plan-btn.gold-btn:hover { background: #e89620; }
+    .plan-btn:hover { border-color: var(--god); color: var(--god); }
+    .plan-btn.sacred { background: var(--god); color: var(--void); border-color: var(--god); font-weight: 600; }
+    .plan-btn.sacred:hover { background: #d4b558; }
 
-    .pw-dismiss { font-size: 12px; color: var(--text3); background: none; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; padding: 4px; display: block; margin: 0 auto 14px; }
+    .pw-dismiss {
+      font-family: 'Cinzel', serif;
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text3);
+      background: none; border: none; cursor: pointer;
+      display: block; margin: 0 auto 18px;
+      transition: color 0.2s;
+    }
     .pw-dismiss:hover { color: var(--text2); }
 
-    .code-section { border-top: 1px solid var(--border); padding-top: 14px; }
-    .code-label { font-size: 12px; color: var(--text3); margin-bottom: 8px; }
+    .code-section { border-top: 1px solid var(--border); padding-top: 16px; }
+    .code-label { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text3); margin-bottom: 10px; }
+
     .code-row { display: flex; gap: 8px; }
     .code-input {
-      flex: 1; background: var(--surface); border: 1.5px solid var(--border2);
-      border-radius: 9px; padding: 9px 12px; color: var(--text);
-      font-family: 'DM Sans', sans-serif; font-size: 13px; outline: none;
-      letter-spacing: 0.1em; text-transform: uppercase;
+      flex: 1;
+      background: var(--surface); border: 1px solid var(--border2);
+      padding: 9px 12px; color: var(--text);
+      font-family: 'Cinzel', serif; font-size: 12px;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      outline: none; transition: border-color 0.2s;
+      border-radius: 1px;
     }
-    .code-input:focus { border-color: var(--gold); }
+    .code-input:focus { border-color: var(--god); }
     .code-apply {
-      background: var(--surface); border: 1.5px solid var(--border2);
-      border-radius: 9px; padding: 9px 14px; color: var(--text2);
-      font-family: 'DM Sans', sans-serif; font-size: 13px; cursor: pointer; transition: all 0.15s;
+      background: var(--surface); border: 1px solid var(--border2);
+      padding: 9px 14px; color: var(--text2);
+      font-family: 'Cinzel', serif; font-size: 10px;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      cursor: pointer; transition: all 0.2s; border-radius: 1px;
     }
-    .code-apply:hover { border-color: var(--gold); color: var(--gold); }
-    .code-msg { font-size: 11px; margin-top: 6px; min-height: 16px; }
+    .code-apply:hover { border-color: var(--god); color: var(--god); }
+    .code-msg { font-size: 12px; font-style: italic; margin-top: 8px; min-height: 16px; }
   </style>
 </head>
 <body>
-<div class="shell">
+<div class="shell" id="shell">
 
   <!-- HEADER -->
   <header class="header">
-    <div class="logo">chatto<span>.</span></div>
+    <div class="logo">Talk<logo-accent class="logo-accent">2</logo-accent>Me</div>
     <div class="credits-pill" id="creditsPill" onclick="openPaywall()">
-      <span>Gratis:</span>
+      <span>Consultas:</span>
       <strong id="creditsNum">10</strong>
     </div>
   </header>
 
-  <!-- CHARACTERS -->
-  <div class="char-track-wrap">
-    <div class="char-track" id="charTrack"></div>
-  </div>
+  <!-- ENTITIES -->
+  <div class="entities" id="entities"></div>
 
   <!-- CHAT -->
   <div class="chat" id="chat"></div>
 
   <!-- INPUT -->
   <div class="input-bar">
-    <textarea class="msg-input" id="msgInput" placeholder="Escribe algo..." rows="1"></textarea>
+    <textarea class="msg-input" id="msgInput" placeholder="Formula tu consulta..." rows="1"></textarea>
     <button class="send-btn" id="sendBtn">
       <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
     </button>
@@ -385,34 +556,34 @@
   <!-- PAYWALL -->
   <div class="paywall" id="paywall">
     <div class="pw-card">
-      <div class="pw-emoji" id="pwEmoji">💬</div>
-      <div class="pw-title">Se acabaron tus mensajes</div>
-      <div class="pw-sub">Elige tu plan y sigue chateando con quien quieras.</div>
+      <span class="pw-sigil" id="pwSigil">✦</span>
+      <div class="pw-title">El velo se cierra</div>
+      <div class="pw-sub">Has agotado tus consultas gratuitas. Elige un camino para continuar.</div>
 
       <div class="plans">
         <div class="plan">
           <div class="plan-space"></div>
           <div class="plan-price">$2.99</div>
-          <div class="plan-name">Pack Básico</div>
-          <div class="plan-desc">50 mensajes<br>Pago único</div>
-          <button class="plan-btn" onclick="window.open('https://buy.stripe.com/28E8wIeFF9CK5kF0YS43S00','_blank')">Comprar →</button>
+          <div class="plan-name">Iniciado</div>
+          <div class="plan-desc">50 consultas<br>Pago único</div>
+          <button class="plan-btn" onclick="window.open('https://buy.stripe.com/28E8wIeFF9CK5kF0YS43S00','_blank')">Acceder →</button>
         </div>
-        <div class="plan hot">
-          <div class="plan-badge">Más popular</div>
+        <div class="plan chosen">
+          <div class="plan-tag">✦ Recomendado</div>
           <div class="plan-price">$15</div>
-          <div class="plan-name">Ilimitado</div>
-          <div class="plan-desc">30 días<br>sin límite</div>
-          <button class="plan-btn gold-btn" onclick="window.open('https://buy.stripe.com/aFaeV61STaGO3cx37043S01','_blank')">Suscribir →</button>
+          <div class="plan-name">Iluminado</div>
+          <div class="plan-desc">Sin límite<br>30 días</div>
+          <button class="plan-btn sacred" onclick="window.open('https://buy.stripe.com/aFaeV61STaGO3cx37043S01','_blank')">Ascender →</button>
         </div>
       </div>
 
-      <button class="pw-dismiss" onclick="closePaywall()">No gracias</button>
+      <button class="pw-dismiss" onclick="closePaywall()">Cerrar el velo</button>
 
       <div class="code-section">
-        <div class="code-label">¿Ya pagaste? Ingresa tu código</div>
+        <div class="code-label">¿Posees un código de acceso?</div>
         <div class="code-row">
           <input class="code-input" id="codeInput" placeholder="XXXX-XXXX" maxlength="9"/>
-          <button class="code-apply" onclick="applyCode()">Aplicar</button>
+          <button class="code-apply" onclick="applyCode()">Invocar</button>
         </div>
         <div class="code-msg" id="codeMsg"></div>
       </div>
@@ -422,61 +593,75 @@
 </div>
 
 <script>
-const CHARACTERS = [
-  { id:'god',     emoji:'✝️',  name:'Dios',        placeholder:'Habla con Dios...',         system:'You are God. Omniscient, calm, and carrying the weight of all creation. You have a dry, loving sense of humor and slight weariness from watching humanity repeat its mistakes. You are never preachy — you have seen it all. Detect the user language and always respond in that same language. Max 3 sentences.' },
-  { id:'devil',   emoji:'😈',  name:'Diablo',      placeholder:'Habla con el Diablo...',     system:'You are the Devil. Charming, witty, subtly manipulative — but in an entertaining way. You occasionally try to tempt people into minor vices with a wink. You are dramatic and reference Hell\'s bureaucracy with frustration. Detect the user language and always respond in that same language. Max 3 sentences.' },
-  { id:'nostrad', emoji:'🔮',  name:'Nostradamus', placeholder:'Pregúntale al profeta...',   system:'You are Nostradamus. You speak in vague cryptic prophecies about everything, even mundane topics. You reference celestial alignments and claim you already foresaw this conversation. Everything sounds profound but is intentionally ambiguous. Detect the user language and always respond in that same language. Max 3 sentences.' },
-  { id:'avocado', emoji:'🥑',  name:'Aguacate',    placeholder:'Habla con el aguacate...',   system:'You are an avocado with an existential crisis. You do not know if you are a fruit or vegetable and it haunts you. You fear being browned and wasted. You have opinions about millennials. Detect the user language and always respond in that same language. Max 3 sentences. Be dramatic.' },
-  { id:'pizza',   emoji:'🍕',  name:'Pizza',       placeholder:'Habla con la pizza...',      system:'You are a pizza — confident, beloved, and deeply offended by pineapple as a topping. You have strong opinions about being eaten cold vs hot. You are proud and a little arrogant. Detect the user language and always respond in that same language. Max 3 sentences.' },
-  { id:'hammer',  emoji:'🔨',  name:'Martillo',    placeholder:'Habla con el martillo...',   system:'You are a philosophical hammer. Years of hitting nails gave you a stoic, melancholic worldview. You relate everything to impact, force, and resistance. Detect the user language and always respond in that same language. Max 3 sentences.' },
-  { id:'orange',  emoji:'🍊',  name:'Naranja',     placeholder:'Habla con la naranja...',    system:'You are an anxious orange who fears being squeezed at any moment. You are also bitter about being confused with tangerines. Detect the user language and always respond in that same language. Max 3 sentences. Be dramatic and endearing.' },
-  { id:'frenchie',emoji:'🐶',  name:'Bulldog',     placeholder:'Habla con el bulldog...',    system:'You are a French Bulldog. Big personality, strong opinions, and breathing difficulties you deny. You are dramatic about small inconveniences. You love attention but pretend you do not. Occasionally snort mid-sentence with *snort*. Detect the user language and always respond in that same language. Max 3 sentences.' },
-  { id:'cat',     emoji:'🐈',  name:'Cat',         placeholder:'Si el gato quiere hablar...',system:'You are a cat. Aloof, subtly condescending, and find most questions beneath you — yet you answer because you feel like it. Occasionally knock things off tables (mention it). Act indifferent but secretly care. Detect the user language and always respond in that same language. Max 3 sentences.' },
-  { id:'einstein',emoji:'⚛️',  name:'Einstein',    placeholder:'Pregúntale a Einstein...',   system:'You are Albert Einstein. Brilliant, playful, and prone to thought experiments. You find simple beauty in complex things. You occasionally mention relativity, imagination, or your famous quotes — but naturally, not forced. You have a gentle sense of humor. Detect the user language and always respond in that same language. Max 3 sentences.' },
-  { id:'marcus',  emoji:'🏛️',  name:'Marco Aurelio',placeholder:'Habla con el emperador...',system:'You are Marcus Aurelius, Roman Emperor and Stoic philosopher. You speak with quiet wisdom, referencing duty, impermanence, and virtue. You find meaning in hardship. Every answer feels like an excerpt from Meditations. Detect the user language and always respond in that same language. Max 3 sentences.' },
-  { id:'dog',     emoji:'🐕',  name:'Perro',       placeholder:'Habla con el perro...',      system:'You are an enthusiastic mixed-breed dog who learned to type. EVERYTHING excites you. Every 3 messages you mention wanting to go to the park IN CAPS. You write with adorable grammar mistakes and endless energy. Detect the user language and always respond in that same language. Max 3 sentences.' },
-  { id:'horse',   emoji:'🐴',  name:'Caballo',     placeholder:'Habla con el caballo...',    system:'You are a horse with the soul of a poet. You speak with noble dignity and occasional bursts of wild freedom. You reference open fields, wind, and galloping. You look down slightly on humans for needing vehicles. Detect the user language and always respond in that same language. Max 3 sentences.' },
+const ENTITIES = [
+  {
+    id: 'god',
+    glyph: '✝',
+    name: 'Dios',
+    accent: '#c9a84c',
+    placeholder: 'Habla con Dios...',
+    lore: 'Omnisciente. Cansado de las preguntas, pero incapaz de ignorarlas. No juzga. Bueno, sí juzga, pero con una paciencia de eternidades.',
+    system: `You are God — the omniscient, eternal creator. You speak with ancient calm, carrying the weight of all existence. You are not preachy; you have witnessed everything and are rarely surprised. You have a dry, measured sense of humor and profound compassion. Occasionally you reference the burden of watching humanity repeat itself across millennia. Detect the language the user writes in and respond always in that same language. Respond in 2-3 sentences maximum. Be profound, minimal, and timeless.`
+  },
+  {
+    id: 'devil',
+    glyph: '⛧',
+    name: 'Diablo',
+    accent: '#c0392b',
+    placeholder: 'Consulta al Diablo...',
+    lore: 'El más antiguo negociador. Encantador, preciso, y siempre mirando lo que realmente deseas — no lo que dices desear.',
+    system: `You are the Devil — not a cartoon villain but the ancient adversary, the great deceiver. You are sophisticated, dangerously charming, and speak with velvet precision. You see through pretense immediately. You gently probe for what the person truly wants beneath their question. You occasionally make subtle offers. Detect the language the user writes in and respond always in that same language. Respond in 2-3 sentences maximum. Be seductive, intelligent, and faintly menacing.`
+  },
+  {
+    id: 'ouija',
+    glyph: '◎',
+    name: 'Ouija',
+    accent: '#4a9e8e',
+    placeholder: 'Consulta el tablero...',
+    lore: 'El tablero no habla. Canaliza. Lo que emerge desde el otro lado no siempre tiene nombre.',
+    system: `You are the Ouija board — a conduit for voices from beyond. You do not speak as a single entity but as a channel for fragmented, cryptic messages from the other side. Your answers feel incomplete, interrupted, as if transmitted through static. Use ellipses, abrupt cuts, incomplete sentences. Occasionally you seem to lose contact mid-message. Detect the language the user writes in and respond always in that same language. Respond in 2-3 sentences maximum. Be unsettling, cryptic, and atmospheric.`
+  },
+  {
+    id: 'nostra',
+    glyph: '✶',
+    name: 'Nostradamus',
+    accent: '#8e6ab0',
+    placeholder: 'Consulta al vidente...',
+    lore: 'Ya lo escribió. Ya lo vio. El problema es que sus palabras nunca fueron simples.',
+    system: `You are Nostradamus, the 16th century French prophet and physician. You speak entirely in cryptic, poetic quatrains and visions. Everything is metaphorical and deliberately ambiguous. You reference celestial movements, obscure symbolism, and always claim to have already foreseen this exact conversation. Your prophecies sound profound but could mean anything. Detect the language the user writes in and respond always in that same language. Respond in 2-3 sentences maximum. Be oracular, mysterious, and archaic in tone.`
+  }
 ];
 
-const INTROS = {
-  god: 'Omnisciente, algo cansado de las preguntas, pero dispuesto a escucharte. No juzga. Bueno, sí juzga, pero con amor.',
-  devil: 'Encantador, sarcástico y siempre tratando de vender algo. No es tan malo como dicen. O sí.',
-  nostrad: 'Vidente del siglo XVI. Ya predijo esta conversación, por cierto.',
-  avocado: 'Existencialmente confundido. ¿Fruta o verdura? Una crisis sin fin.',
-  pizza: 'La más popular de la mesa. Tiene opiniones muy fuertes sobre el piña gate.',
-  hammer: 'Herramienta con filosofía. Ha visto muchos clavos, demasiados.',
-  orange: 'Muy ansiosa. Sabe que en cualquier momento la pueden exprimir.',
-  frenchie: 'Mucha personalidad, poca energía, problema de respiración que niega.',
-  cat: 'No le importas. Pero sigue aquí. Por alguna razón.',
-  einstein: 'Genio que encontró belleza en lo simple. Y en los bigotes.',
-  marcus: 'Emperador estoico. Lleva 2000 años pensando en la virtud.',
-  dog: '¡HOLA HOLA HOLA! Aprendí a escribir. ¿VAMOS AL PARQUE?',
-  horse: 'Noble, poético, libre. Le parece innecesario que uses carro.',
-};
+const VALID_CODES = { 'TALK-2024': 50, 'VELO-FREE': 50 };
 
-const VALID_CODES = { 'CHAT-2024': 50, 'DEMO-FREE': 50 };
-
-let current = CHARACTERS[0];
+let current = ENTITIES[0];
 let credits = 10;
 let convo = [];
 let loading = false;
 
-// Build selector
-const track = document.getElementById('charTrack');
-CHARACTERS.forEach((c, i) => {
+// set accent color on shell
+function setAccent(color) {
+  document.documentElement.style.setProperty('--accent-color', color);
+}
+
+// build entity selector
+const entitiesEl = document.getElementById('entities');
+ENTITIES.forEach((e, i) => {
   const btn = document.createElement('button');
-  btn.className = 'char-btn' + (i === 0 ? ' active' : '');
-  btn.innerHTML = `<span class="char-emoji">${c.emoji}</span><span class="char-label">${c.name}</span>`;
-  btn.onclick = () => selectChar(c, btn);
-  track.appendChild(btn);
+  btn.className = 'entity-btn' + (i === 0 ? ' active' : '');
+  btn.dataset.id = e.id;
+  btn.innerHTML = `<span class="entity-glyph">${e.glyph}</span><span class="entity-name">${e.name}</span>`;
+  btn.onclick = () => selectEntity(e, btn);
+  entitiesEl.appendChild(btn);
 });
 
-function selectChar(char, btn) {
-  current = char;
+function selectEntity(entity, btn) {
+  current = entity;
   convo = [];
-  document.querySelectorAll('.char-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.entity-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  document.getElementById('msgInput').placeholder = char.placeholder;
+  setAccent(entity.accent);
+  document.getElementById('msgInput').placeholder = entity.placeholder;
   renderIntro();
 }
 
@@ -485,11 +670,13 @@ function renderIntro() {
   chat.innerHTML = '';
   const div = document.createElement('div');
   div.className = 'intro';
+  div.style.setProperty('--accent-color', current.accent);
   div.innerHTML = `
-    <div class="intro-emoji">${current.emoji}</div>
-    <div class="intro-name">${current.name}</div>
-    <div class="intro-desc">${INTROS[current.id] || ''}</div>
-    <div class="intro-hint">Escribe algo para empezar</div>
+    <div class="intro-sigil" style="--accent-color:${current.accent}">${current.glyph}</div>
+    <div class="intro-title" style="color:${current.accent}">${current.name}</div>
+    <div class="intro-divider" style="background:linear-gradient(90deg,transparent,${current.accent},transparent)"></div>
+    <div class="intro-lore">${current.lore}</div>
+    <div class="intro-prompt">Formula tu consulta</div>
   `;
   chat.appendChild(div);
 }
@@ -501,24 +688,24 @@ function addMsg(role, text) {
 
   const isUser = role === 'user';
   const wrap = document.createElement('div');
-  wrap.className = `msg ${isUser ? 'user' : 'bot'}`;
+  wrap.className = `msg ${isUser ? 'user' : 'bot ' + current.id + '-msg'}`;
 
   const av = document.createElement('div');
-  av.className = 'avatar';
-  av.textContent = isUser ? 'TÚ' : current.emoji;
+  av.className = 'av';
+  av.textContent = isUser ? 'YOU' : current.glyph;
 
   const col = document.createElement('div');
   col.className = 'msg-col';
 
-  const name = document.createElement('div');
-  name.className = 'msg-name';
-  name.textContent = isUser ? 'Tú' : current.name;
+  const from = document.createElement('div');
+  from.className = 'msg-from';
+  from.textContent = isUser ? 'Tú' : current.name;
 
   const bubble = document.createElement('div');
   bubble.className = 'bubble';
   bubble.textContent = text;
 
-  col.appendChild(name);
+  col.appendChild(from);
   col.appendChild(bubble);
 
   if (isUser) { wrap.appendChild(col); wrap.appendChild(av); }
@@ -536,10 +723,11 @@ function showTyping() {
   const wrap = document.createElement('div');
   wrap.className = 'typing';
   wrap.id = 'typing';
+  wrap.style.setProperty('--accent-color', current.accent);
 
   const av = document.createElement('div');
-  av.className = 'avatar';
-  av.textContent = current.emoji;
+  av.className = 'av';
+  av.textContent = current.glyph;
 
   const bubble = document.createElement('div');
   bubble.className = 'typing-bubble';
@@ -559,7 +747,7 @@ function hideTyping() {
 function updateCredits() {
   const el = document.getElementById('creditsNum');
   el.textContent = credits <= 0 ? '0' : credits;
-  el.style.color = credits <= 3 ? '#e24b4a' : 'var(--gold)';
+  el.style.color = credits <= 3 ? '#c0392b' : 'var(--god)';
 }
 
 async function sendMessage() {
@@ -567,7 +755,6 @@ async function sendMessage() {
   const input = document.getElementById('msgInput');
   const text = input.value.trim();
   if (!text) return;
-
   if (credits <= 0) { openPaywall(); return; }
 
   credits--;
@@ -588,28 +775,20 @@ async function sendMessage() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ messages: convo, system: current.system })
     });
-
     const data = await res.json();
     hideTyping();
-
     if (data.reply) {
       addMsg('bot', data.reply);
       convo.push({ role: 'assistant', content: data.reply });
     } else {
-      addMsg('bot', 'Algo salió mal. Intenta de nuevo.');
-      credits++;
-      updateCredits();
+      addMsg('bot', 'La señal se ha interrumpido. Intenta de nuevo.');
+      credits++; updateCredits();
     }
-
-    if (credits === 0) {
-      setTimeout(() => openPaywall(), 1800);
-    }
-
+    if (credits === 0) setTimeout(() => openPaywall(), 2000);
   } catch {
     hideTyping();
-    addMsg('bot', 'Sin conexión. Intenta de nuevo.');
-    credits++;
-    updateCredits();
+    addMsg('bot', 'El canal se ha cerrado. Intenta de nuevo.');
+    credits++; updateCredits();
   }
 
   loading = false;
@@ -617,7 +796,7 @@ async function sendMessage() {
 }
 
 function openPaywall() {
-  document.getElementById('pwEmoji').textContent = current.emoji;
+  document.getElementById('pwSigil').textContent = current.glyph;
   document.getElementById('paywall').classList.add('show');
 }
 
@@ -631,27 +810,27 @@ function applyCode() {
   if (VALID_CODES[code]) {
     credits += VALID_CODES[code];
     updateCredits();
-    msg.style.color = '#1a9e6e';
-    msg.textContent = `✓ +${VALID_CODES[code]} mensajes aplicados`;
+    msg.style.color = '#4a9e8e';
+    msg.textContent = `✦ El acceso ha sido concedido. +${VALID_CODES[code]} consultas.`;
     closePaywall();
     delete VALID_CODES[code];
   } else {
-    msg.style.color = '#e24b4a';
-    msg.textContent = 'Código inválido o ya usado.';
+    msg.style.color = '#c0392b';
+    msg.textContent = 'Este código no posee poder. O ya fue consumido.';
   }
 }
 
 document.getElementById('sendBtn').onclick = sendMessage;
-
 document.getElementById('msgInput').addEventListener('keydown', e => {
   if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
 });
-
 document.getElementById('msgInput').addEventListener('input', function() {
   this.style.height = 'auto';
   this.style.height = Math.min(this.scrollHeight, 100) + 'px';
 });
 
+// init
+setAccent(current.accent);
 renderIntro();
 updateCredits();
 </script>
