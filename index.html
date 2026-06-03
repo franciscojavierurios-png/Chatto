@@ -524,6 +524,30 @@
       cursor: pointer; transition: all 0.2s; border-radius: 1px;
     }
     .code-apply:hover { border-color: var(--god); color: var(--god); }
+
+    .pw-memory-hook {
+      font-size: 12px;
+      font-style: italic;
+      color: var(--god);
+      background: var(--god-dim);
+      border: 1px solid rgba(201,168,76,0.2);
+      padding: 10px 14px;
+      margin-bottom: 16px;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    .pw-upgrade-box {
+      background: var(--surface);
+      border: 1px solid var(--god);
+      padding: 20px 16px;
+      text-align: center;
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
     .code-msg { font-size: 12px; font-style: italic; margin-top: 8px; min-height: 16px; }
   </style>
 </head>
@@ -557,33 +581,49 @@
   <div class="paywall" id="paywall">
     <div class="pw-card">
       <span class="pw-sigil" id="pwSigil">✦</span>
-      <div class="pw-title">El velo se cierra</div>
-      <div class="pw-sub">Has agotado tus consultas gratuitas. Elige un camino para continuar.</div>
+      <div class="pw-title" id="pwTitle">El velo se cierra</div>
+      <div class="pw-sub" id="pwSub">Has agotado tus consultas. La conversación continúa al otro lado.</div>
 
-      <div class="plans">
-        <div class="plan">
-          <div class="plan-space"></div>
-          <div class="plan-price">$2.99</div>
-          <div class="plan-name">Iniciado</div>
-          <div class="plan-desc">50 consultas<br>Pago único</div>
-          <button class="plan-btn" onclick="window.open('https://buy.stripe.com/28E8wIeFF9CK5kF0YS43S00','_blank')">Acceder →</button>
+      <!-- FREE PAYWALL: muestra los dos planes -->
+      <div id="pwFreeSection">
+        <div class="plans">
+          <div class="plan">
+            <div class="plan-space"></div>
+            <div class="plan-price">$2.99</div>
+            <div class="plan-name" id="planName1">Iniciado</div>
+            <div class="plan-desc" id="planDesc1">50 consultas<br>Pago único</div>
+            <button class="plan-btn" id="planBtn1" onclick="window.open('https://buy.stripe.com/28E8wIeFF9CK5kF0YS43S00','_blank')">Acceder →</button>
+          </div>
+          <div class="plan chosen">
+            <div class="plan-tag" id="planTag">✦ Recomendado</div>
+            <div class="plan-price">$15</div>
+            <div class="plan-name" id="planName2">Iluminado</div>
+            <div class="plan-desc" id="planDesc2">Sin límite<br>30 días</div>
+            <button class="plan-btn sacred" id="planBtn2" onclick="window.open('https://buy.stripe.com/aFaeV61STaGO3cx37043S01','_blank')">Ascender →</button>
+          </div>
         </div>
-        <div class="plan chosen">
-          <div class="plan-tag">✦ Recomendado</div>
-          <div class="plan-price">$15</div>
-          <div class="plan-name">Iluminado</div>
-          <div class="plan-desc">Sin límite<br>30 días</div>
-          <button class="plan-btn sacred" onclick="window.open('https://buy.stripe.com/aFaeV61STaGO3cx37043S01','_blank')">Ascender →</button>
+        <div class="pw-memory-hook" id="pwMemoryHook">
+          ✦ Con el plan Iluminado tu conversación se guarda — regresa y continúa donde lo dejaste.
         </div>
       </div>
 
-      <button class="pw-dismiss" onclick="closePaywall()">Cerrar el velo</button>
+      <!-- PAID PAYWALL: solo muestra $15 -->
+      <div id="pwPaidSection" style="display:none">
+        <div class="pw-upgrade-box">
+          <div class="plan-price">$15</div>
+          <div class="plan-name" id="planNameUpgrade">Iluminado</div>
+          <div class="plan-desc" id="planDescUpgrade">Mensajes ilimitados · 30 días<br>Tu conversación se guarda</div>
+          <button class="plan-btn sacred" style="max-width:200px;margin:10px auto 0" id="planBtnUpgrade" onclick="window.open('https://buy.stripe.com/aFaeV61STaGO3cx37043S01','_blank')">Ascender →</button>
+        </div>
+      </div>
+
+      <button class="pw-dismiss" id="pwDismiss" onclick="closePaywall()">Cerrar el velo</button>
 
       <div class="code-section">
-        <div class="code-label">¿Posees un código de acceso?</div>
+        <div class="code-label" id="codeLabel">¿Posees un código de acceso?</div>
         <div class="code-row">
           <input class="code-input" id="codeInput" placeholder="XXXX-XXXX" maxlength="9"/>
-          <button class="code-apply" onclick="applyCode()">Invocar</button>
+          <button class="code-apply" id="codeApplyBtn" onclick="applyCode()">Invocar</button>
         </div>
         <div class="code-msg" id="codeMsg"></div>
       </div>
@@ -651,12 +691,98 @@ const VALID_CODES = {
   'ILUM-P7K3':9999,'ILUM-Q8J1':9999,'ILUM-R9I5':9999,'ILUM-S1H4':9999,'ILUM-T2G7':9999,
 };
 
+// ── LANGUAGE ──
+const userLang = (navigator.language || 'es').toLowerCase().startsWith('en') ? 'en' : 'es';
+
+const T = {
+  es: {
+    consults: 'Consultas', freeLabel: 'Gratis', placeholder: 'Formula tu consulta...',
+    pwTitle: 'El velo se cierra', pwTitlePaid: 'Consultas agotadas',
+    pwSub: 'Has agotado tus consultas gratuitas. La conversación continúa al otro lado.',
+    pwSubPaid: 'Has usado todos tus mensajes. Para seguir, asciende al plan Iluminado.',
+    memHook: '✦ Con el plan Iluminado tu conversación se guarda — regresa y continúa donde lo dejaste.',
+    planName1: 'Iniciado', planDesc1: '50 consultas\nPago único', planBtn1: 'Acceder →',
+    planTag: '✦ Recomendado', planName2: 'Iluminado', planDesc2: 'Sin límite\n30 días', planBtn2: 'Ascender →',
+    planNameUpgrade: 'Iluminado', planDescUpgrade: 'Mensajes ilimitados · 30 días\nTu conversación se guarda', planBtnUpgrade: 'Ascender →',
+    dismiss: 'Cerrar el velo', codeLabel: '¿Posees un código de acceso?',
+    codePlaceholder: 'XXXX-XXXX', codeApply: 'Invocar',
+    codeOk: '✦ El acceso ha sido concedido.', codeErr: 'Este código no posee poder. O ya fue consumido.',
+    interrupted: 'La señal se ha interrumpido. Intenta de nuevo.',
+    closed: 'El canal se ha cerrado. Intenta de nuevo.',
+    introPrompt: 'Formula tu consulta', youLabel: 'Tú',
+  },
+  en: {
+    consults: 'Consults', freeLabel: 'Free', placeholder: 'Ask your question...',
+    pwTitle: 'The veil closes', pwTitlePaid: 'Consults exhausted',
+    pwSub: 'Your free consults are gone. The conversation continues beyond the veil.',
+    pwSubPaid: 'You\'ve used all your messages. To continue, ascend to the Illuminated plan.',
+    memHook: '✦ With the Illuminated plan your conversation is saved — return and continue where you left off.',
+    planName1: 'Initiated', planDesc1: '50 consults\nOne-time payment', planBtn1: 'Access →',
+    planTag: '✦ Recommended', planName2: 'Illuminated', planDesc2: 'Unlimited\n30 days', planBtn2: 'Ascend →',
+    planNameUpgrade: 'Illuminated', planDescUpgrade: 'Unlimited messages · 30 days\nYour conversation is saved', planBtnUpgrade: 'Ascend →',
+    dismiss: 'Close the veil', codeLabel: 'Do you have an access code?',
+    codePlaceholder: 'XXXX-XXXX', codeApply: 'Invoke',
+    codeOk: '✦ Access granted.', codeErr: 'This code holds no power. Or it has been consumed.',
+    interrupted: 'The signal was interrupted. Try again.',
+    closed: 'The channel has closed. Try again.',
+    introPrompt: 'Ask your question', youLabel: 'You',
+  }
+};
+const lang = T[userLang];
+
+// Apply language to static UI
+function applyLanguage() {
+  document.getElementById('creditsNum').parentElement.childNodes[0].textContent = lang.consults + ': ';
+  document.getElementById('msgInput').placeholder = lang.placeholder;
+  document.getElementById('pwTitle').textContent = lang.pwTitle;
+  document.getElementById('pwSub').textContent = lang.pwSub;
+  document.getElementById('pwMemoryHook').textContent = lang.memHook;
+  document.getElementById('planName1').textContent = lang.planName1;
+  document.getElementById('planDesc1').innerHTML = lang.planDesc1.replace('\n','<br>');
+  document.getElementById('planBtn1').textContent = lang.planBtn1;
+  document.getElementById('planTag').textContent = lang.planTag;
+  document.getElementById('planName2').textContent = lang.planName2;
+  document.getElementById('planDesc2').innerHTML = lang.planDesc2.replace('\n','<br>');
+  document.getElementById('planBtn2').textContent = lang.planBtn2;
+  document.getElementById('planNameUpgrade').textContent = lang.planNameUpgrade;
+  document.getElementById('planDescUpgrade').innerHTML = lang.planDescUpgrade.replace('\n','<br>');
+  document.getElementById('planBtnUpgrade').textContent = lang.planBtnUpgrade;
+  document.getElementById('pwDismiss').textContent = lang.dismiss;
+  document.getElementById('codeLabel').textContent = lang.codeLabel;
+  document.getElementById('codeInput').placeholder = lang.codePlaceholder;
+  document.getElementById('codeApplyBtn').textContent = lang.codeApply;
+}
+
+// ── STORAGE — anti-refresh ──
+const STORAGE_KEY = 'talk2me_credits';
+const FREE_CREDITS = 10;
+
+function loadCredits() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved !== null) return parseInt(saved, 10);
+  } catch(e) {}
+  return FREE_CREDITS;
+}
+
+function saveCredits(n) {
+  try { localStorage.setItem(STORAGE_KEY, n); } catch(e) {}
+}
+
 let current = ENTITIES[0];
-let credits = 10;
+let credits = loadCredits();
+let hasPaidBefore = credits < FREE_CREDITS || credits > FREE_CREDITS; // heuristic
 let convo = [];
 let loading = false;
 
-// set accent color on shell
+// track if user has ever used a paid code
+function markPaid() {
+  try { localStorage.setItem('talk2me_paid', '1'); } catch(e) {}
+}
+function isPaid() {
+  try { return localStorage.getItem('talk2me_paid') === '1'; } catch(e) { return false; } 
+}
+
 function setAccent(color) {
   document.documentElement.style.setProperty('--accent-color', color);
 }
@@ -693,7 +819,7 @@ function renderIntro() {
     <div class="intro-title" style="color:${current.accent}">${current.name}</div>
     <div class="intro-divider" style="background:linear-gradient(90deg,transparent,${current.accent},transparent)"></div>
     <div class="intro-lore">${current.lore}</div>
-    <div class="intro-prompt">Formula tu consulta</div>
+    <div class="intro-prompt">${lang.introPrompt}</div>
   `;
   chat.appendChild(div);
 }
@@ -709,14 +835,14 @@ function addMsg(role, text) {
 
   const av = document.createElement('div');
   av.className = 'av';
-  av.textContent = isUser ? 'YOU' : current.glyph;
+  av.textContent = isUser ? lang.youLabel : current.glyph;
 
   const col = document.createElement('div');
   col.className = 'msg-col';
 
   const from = document.createElement('div');
   from.className = 'msg-from';
-  from.textContent = isUser ? 'Tú' : current.name;
+  from.textContent = isUser ? lang.youLabel : current.name;
 
   const bubble = document.createElement('div');
   bubble.className = 'bubble';
@@ -765,6 +891,7 @@ function updateCredits() {
   const el = document.getElementById('creditsNum');
   el.textContent = credits <= 0 ? '0' : credits;
   el.style.color = credits <= 3 ? '#c0392b' : 'var(--god)';
+  saveCredits(credits);
 }
 
 async function sendMessage() {
@@ -798,13 +925,13 @@ async function sendMessage() {
       addMsg('bot', data.reply);
       convo.push({ role: 'assistant', content: data.reply });
     } else {
-      addMsg('bot', 'La señal se ha interrumpido. Intenta de nuevo.');
+      addMsg('bot', lang.interrupted);
       credits++; updateCredits();
     }
     if (credits === 0) setTimeout(() => openPaywall(), 2000);
   } catch {
     hideTyping();
-    addMsg('bot', 'El canal se ha cerrado. Intenta de nuevo.');
+    addMsg('bot', lang.closed);
     credits++; updateCredits();
   }
 
@@ -814,6 +941,12 @@ async function sendMessage() {
 
 function openPaywall() {
   document.getElementById('pwSigil').textContent = current.glyph;
+  const paid = isPaid();
+  // If paid user ran out → show only $15 upgrade
+  document.getElementById('pwFreeSection').style.display = paid ? 'none' : 'block';
+  document.getElementById('pwPaidSection').style.display = paid ? 'block' : 'none';
+  document.getElementById('pwTitle').textContent = paid ? lang.pwTitlePaid : lang.pwTitle;
+  document.getElementById('pwSub').textContent = paid ? lang.pwSubPaid : lang.pwSub;
   document.getElementById('paywall').classList.add('show');
 }
 
@@ -825,15 +958,17 @@ function applyCode() {
   const code = document.getElementById('codeInput').value.trim().toUpperCase();
   const msg = document.getElementById('codeMsg');
   if (VALID_CODES[code]) {
-    credits += VALID_CODES[code];
+    const amount = VALID_CODES[code];
+    credits += amount;
     updateCredits();
+    markPaid();
     msg.style.color = '#4a9e8e';
-    msg.textContent = `✦ El acceso ha sido concedido. +${VALID_CODES[code]} consultas.`;
+    msg.textContent = lang.codeOk + ` +${amount}`;
     closePaywall();
     delete VALID_CODES[code];
   } else {
     msg.style.color = '#c0392b';
-    msg.textContent = 'Este código no posee poder. O ya fue consumido.';
+    msg.textContent = lang.codeErr;
   }
 }
 
@@ -847,6 +982,7 @@ document.getElementById('msgInput').addEventListener('input', function() {
 });
 
 // init
+applyLanguage();
 setAccent(current.accent);
 renderIntro();
 updateCredits();
