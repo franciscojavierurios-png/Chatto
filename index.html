@@ -67,11 +67,16 @@
     @media (min-width: 500px) {
       body { display: flex; align-items: center; justify-content: center; min-height: 100dvh; background: var(--void); }
       .shell {
-        height: min(820px, 95dvh);
+        max-width: 780px;
+        width: 90vw;
+        height: min(880px, 95dvh);
         border-radius: 2px;
         border: 1px solid var(--border2);
         box-shadow: 0 0 80px rgba(0,0,0,0.8), 0 0 160px rgba(0,0,0,0.4);
       }
+      .chat { padding: 24px 32px; }
+      .input-bar { padding: 14px 24px; }
+      .header { padding: 18px 28px 16px; }
     }
 
     /* ── HEADER ── */
@@ -636,7 +641,7 @@
 const ENTITIES = [
   {
     id: 'god',
-    glyph: '✝',
+    glyph: '†',
     name: 'Dios',
     accent: '#c9a84c',
     placeholder: 'Habla con Dios...',
