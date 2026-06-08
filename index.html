@@ -563,7 +563,7 @@
   <header class="header">
     <div class="logo">Talk<logo-accent class="logo-accent">2</logo-accent>Me</div>
     <div class="credits-pill" id="creditsPill" onclick="openPaywall()">
-      <span>Consultas:</span>
+      <span id="creditsLabel"></span>
       <strong id="creditsNum">10</strong>
     </div>
   </header>
@@ -737,7 +737,7 @@ const lang = T[userLang];
 
 // Apply language to static UI
 function applyLanguage() {
-  document.getElementById('creditsNum').parentElement.childNodes[0].textContent = lang.consults + ': ';
+  document.getElementById('creditsLabel').textContent = lang.consults + ': ';
   document.getElementById('msgInput').placeholder = lang.placeholder;
   document.getElementById('pwTitle').textContent = lang.pwTitle;
   document.getElementById('pwSub').textContent = lang.pwSub;
