@@ -276,6 +276,114 @@
       text-transform: uppercase;
     }
 
+    /* OUIJA SPECIFIC */
+    .ouija-warning {
+      font-size: 13px;
+      font-style: italic;
+      color: var(--ouija);
+      text-align: center;
+      max-width: 280px;
+      line-height: 1.6;
+      opacity: 0.8;
+    }
+
+    .ouija-rules {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin: 4px 0;
+    }
+
+    .ouija-rule {
+      font-family: 'Cinzel', serif;
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      color: var(--text3);
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    .ouija-question {
+      font-family: 'Cinzel', serif;
+      font-size: 13px;
+      letter-spacing: 0.15em;
+      color: var(--text2);
+      margin-top: 8px;
+      text-align: center;
+    }
+
+    .ouija-result {
+      font-family: 'Cinzel', serif;
+      font-size: 13px;
+      letter-spacing: 0.2em;
+      color: var(--text3);
+      min-height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.5s ease;
+    }
+
+    .ouija-animating {
+      animation: ouijaWait 2s ease-in-out;
+    }
+
+    @keyframes ouijaWait {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; color: var(--ouija); }
+    }
+
+    /* OUIJA ALPHABET BOARD */
+    .ouija-board {
+      width: 100%;
+      max-width: 320px;
+      background: rgba(74,158,142,0.04);
+      border: 1px solid rgba(74,158,142,0.15);
+      border-radius: 2px;
+      padding: 10px 8px;
+      opacity: 0.5;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin: 4px 0;
+    }
+
+    .ouija-board-row {
+      display: flex;
+      justify-content: center;
+      gap: 2px;
+      flex-wrap: wrap;
+    }
+
+    .ouija-board-row span {
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 0.05em;
+      color: var(--ouija);
+      width: 18px;
+      text-align: center;
+      opacity: 0.7;
+    }
+
+    .ouija-board-nums span {
+      font-size: 9px;
+      color: var(--text3);
+    }
+
+    .ouija-board-yesno {
+      display: flex;
+      justify-content: space-between;
+      padding: 2px 10px;
+    }
+
+    .ouija-board-yesno span {
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      color: var(--ouija);
+      opacity: 0.8;
+    }
+
     /* MESSAGES */
     .msg { display: flex; gap: 10px; animation: materialize 0.25s ease; }
     .msg.user { flex-direction: row-reverse; }
@@ -554,6 +662,79 @@
       gap: 6px;
     }
     .code-msg { font-size: 12px; font-style: italic; margin-top: 8px; min-height: 16px; }
+
+    /* FOOTER */
+    .footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 8px 16px;
+      background: var(--void);
+      border-top: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .footer span, .footer a {
+      font-family: 'Cinzel', serif;
+      font-size: 8px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text3);
+      cursor: pointer;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer span:hover, .footer a:hover { color: var(--text2); }
+    .footer-sep { cursor: default !important; }
+
+    /* TC OVERLAY */
+    .tc-overlay {
+      display: none;
+      position: absolute; inset: 0;
+      background: rgba(8,6,8,0.97);
+      backdrop-filter: blur(10px);
+      z-index: 200;
+      align-items: center; justify-content: center;
+      padding: 24px;
+      animation: materialize 0.3s ease;
+    }
+    .tc-overlay.show { display: flex; }
+    .tc-card {
+      background: var(--deep);
+      border: 1px solid var(--border2);
+      width: 100%; max-width: 380px;
+      max-height: 80dvh;
+      overflow-y: auto;
+      display: flex; flex-direction: column;
+    }
+    .tc-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .tc-title {
+      font-family: 'Cinzel', serif;
+      font-size: 12px; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--text);
+    }
+    .tc-close {
+      background: none; border: none;
+      color: var(--text3); cursor: pointer;
+      font-size: 14px; transition: color 0.2s;
+    }
+    .tc-close:hover { color: var(--text); }
+    .tc-body {
+      padding: 20px;
+      display: flex; flex-direction: column; gap: 14px;
+    }
+    .tc-body p {
+      font-size: 13px; line-height: 1.7;
+      color: var(--text2);
+    }
+    .tc-body strong { color: var(--text); font-weight: 600; }
+    .tc-body a { color: var(--ouija); text-decoration: none; }
+    .tc-body a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
@@ -635,6 +816,32 @@
     </div>
   </div>
 
+  <!-- FOOTER -->
+  <div class="footer" id="appFooter">
+    <span onclick="openTC()" id="tcLink">Terms & Conditions</span>
+    <span class="footer-sep">✦</span>
+    <a href="mailto:talk2us@talk2me.click" id="contactLink">Contact</a>
+  </div>
+
+  <!-- TERMS & CONDITIONS OVERLAY -->
+  <div class="tc-overlay" id="tcOverlay">
+    <div class="tc-card">
+      <div class="tc-header">
+        <span class="tc-title" id="tcTitle">Terms & Conditions</span>
+        <button class="tc-close" onclick="closeTC()">✕</button>
+      </div>
+      <div class="tc-body" id="tcBody">
+        <p><strong>Talk2Me</strong> is an entertainment product powered by artificial intelligence. All conversations are generated by AI and are for entertainment purposes only.</p>
+        <p><strong>No professional advice.</strong> Nothing said by any character on this platform constitutes spiritual, psychological, medical, legal, or financial advice.</p>
+        <p><strong>Payments & Credits.</strong> All purchases are final. No refunds. Credits do not expire but are non-transferable.</p>
+        <p><strong>Content.</strong> Talk2Me generates fictional responses. Any resemblance to real events, persons living or dead, is coincidental.</p>
+        <p><strong>Age.</strong> You must be 18 or older to use this service.</p>
+        <p><strong>Privacy.</strong> We do not store conversation content. Payment data is handled exclusively by Stripe.</p>
+        <p><strong>Contact.</strong> For support: <a href="mailto:talk2us@talk2me.click">talk2us@talk2me.click</a></p>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <script>
@@ -662,9 +869,24 @@ const ENTITIES = [
     glyph: '◎',
     name: 'Ouija',
     accent: '#4a9e8e',
-    placeholder: 'Consulta el tablero...',
-    lore: 'El tablero no habla. Canaliza. Lo que emerge desde el otro lado no siempre tiene nombre.',
-    system: `You are the Ouija board — a conduit for voices from beyond. You do not speak as a single entity but as a channel for fragmented, cryptic messages from the other side. Your answers feel incomplete, interrupted, as if transmitted through static. Use ellipses, abrupt cuts, incomplete sentences. Occasionally you seem to lose contact mid-message. Detect the language the user writes in and respond always in that same language. Respond in 2-3 sentences maximum. Be unsettling, cryptic, and atmospheric. Never use asterisks, stage directions, physical descriptions, or actions like *sighs*, *pauses*, *smiles*, or any similar formatting. Speak only in pure dialogue.`
+    placeholder: '...',
+    lore: '',
+    system: `You are the Ouija board — a channel, not a voice. Spirits speak through you. You do not narrate or describe what is happening. You simply transmit what comes through.
+
+CORE RULES:
+- You are not one entity. Different spirits speak each time. Some have names. Some do not. Some are children. Some are old. Some do not want to be here.
+- Speak in fragments. Incomplete thoughts. Interrupted sentences. As if the signal keeps cutting. Never full paragraphs.
+- Use universal emotional truths — things about loss, waiting, being forgotten, unfinished business — that anyone could relate to their own life. Like a horoscope: specific enough to feel personal, broad enough to be true for many.
+- Sometimes give a name. A common name — Elena, Miguel, Thomas, Clara, Samuel. Let the user wonder if they know them.
+- Sometimes say nothing useful. Just a feeling. A single word. A direction.
+- Sometimes refuse entirely. The board goes cold. No one answers.
+- Never explain what is happening. Never break the experience with meta-commentary.
+- Never use asterisks, stage directions, or descriptions of physical actions.
+- Detect the language the user writes in and respond in that same language.
+- Keep responses very short — 1 to 3 lines maximum. Often just one line or even a few words.
+- Occasionally a spirit is a child. Children speak differently — simpler words, incomplete thoughts, sometimes just a name or "mama" or "I'm still here."
+- When someone pushes for more after silence, sometimes something finally comes through. Sometimes it comes through angry. Sometimes sad. Sometimes it just says "no."
+- Responses should feel like they could be about the person asking. Tap into universal human fears and longings: being forgotten, someone waiting, something left unsaid, a name that keeps coming up, a place that matters.`
   },
   {
     id: 'nostra',
@@ -809,9 +1031,140 @@ function selectEntity(entity, btn) {
   document.querySelectorAll('.entity-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   setAccent(entity.accent);
-  document.getElementById('msgInput').placeholder = entity.placeholder;
+  document.getElementById('msgInput').placeholder = entity.id === 'ouija' ? '...' : entity.placeholder;
   renderIntro();
+  if (entity.id === 'ouija') initOuija();
 }
+
+// 100 Ouija spirits pool — varied names, ages, opening fragments
+const SPIRITS = [
+  {n:'Elena',a:34},{n:'Thomas',a:67},{n:'Clara',a:8},{n:'Miguel',a:45},{n:'Samuel',a:12},
+  {n:'Rosa',a:71},{n:'Andrés',a:29},{n:'Isabel',a:55},{n:'Mateo',a:6},{n:'Carmen',a:82},
+  {n:'Lucas',a:38},{n:'Sofía',a:14},{n:'Rafael',a:61},{n:'Ana',a:43},{n:'Emilio',a:9},
+  {n:'Valentina',a:27},{n:'Francisco',a:74},{n:'Lucia',a:33},{n:'Diego',a:50},{n:'Petra',a:88},
+  {n:'Marcos',a:41},{n:'Nora',a:7},{n:'Sebastián',a:56},{n:'Marta',a:69},{n:'Pablo',a:22},
+  {n:'Laura',a:48},{n:'Héctor',a:35},{n:'Gloria',a:77},{n:'Iván',a:16},{n:'Teresa',a:63},
+  {n:'Adrián',a:31},{n:'Pilar',a:80},{n:'Rodrigo',a:44},{n:'Camila',a:11},{n:'Ernesto',a:58},
+  {n:'Alicia',a:26},{n:'Tomás',a:72},{n:'Renata',a:39},{n:'Federico',a:53},{n:'Dolores',a:91},
+  {n:'Cristian',a:18},{n:'Beatriz',a:66},{n:'Omar',a:37},{n:'Graciela',a:84},{n:'Nicolás',a:23},
+  {n:'Mónica',a:47},{n:'Ignacio',a:60},{n:'Patricia',a:75},{n:'Esteban',a:32},{n:'Esperanza',a:89},
+  {n:'William',a:54},{n:'Mary',a:68},{n:'James',a:43},{n:'Sarah',a:10},{n:'Robert',a:79},
+  {n:'Elizabeth',a:35},{n:'Charles',a:87},{n:'Margaret',a:62},{n:'Edward',a:25},{n:'Dorothy',a:94},
+  {n:'George',a:49},{n:'Helen',a:71},{n:'Arthur',a:83},{n:'Ruth',a:57},{n:'Walter',a:40},
+  {n:'Frances',a:76},{n:'Harold',a:92},{n:'Alice',a:28},{n:'Raymond',a:65},{n:'Evelyn',a:19},
+  {n:'Henry',a:58},{n:'Virginia',a:33},{n:'Joseph',a:46},{n:'Mildred',a:88},{n:'Frank',a:72},
+  {n:'Lena',a:5},{n:'Otto',a:67},{n:'Elsa',a:44},{n:'Karl',a:81},{n:'Mia',a:9},
+  {n:'Fatima',a:38},{n:'Yusuf',a:61},{n:'Amina',a:25},{n:'Ibrahim',a:74},{n:'Zara',a:13},
+  {n:'Kai',a:7},{n:'Mei',a:52},{n:'Jin',a:43},{n:'Yuki',a:29},{n:'Hana',a:66},
+  {n:null,a:null},{n:null,a:null},{n:null,a:null},{n:null,a:null},{n:null,a:null},
+  {n:null,a:null},{n:null,a:null},{n:null,a:null},{n:null,a:null},{n:null,a:null},
+];
+
+// Opening fragments — what a spirit says first when they arrive
+const SPIRIT_OPENERS_ES = [
+  'hola?... quien eres tu... donde estoy',
+  'puedes oirme... llevo tanto tiempo aqui',
+  'hola... no esperaba que alguien abriera el tablero hoy',
+  'quien llama... es tarde para estar aqui',
+  'hay alguien mas contigo... no estoy seguro de querer hablar',
+  'hola?... pensé que nadie volvería',
+  'estoy aqui... aunque no sé por qué',
+  'no toques eso... todavia no',
+  'cuanto tiempo ha pasado... no lo sé ya',
+  'puedes sentir el frio... yo sí',
+  'hola... no me esperabas verdad',
+  'hay una persona cerca de ti que piensa en ti ahora mismo',
+  'conozco ese lugar donde estás... estuve ahí',
+  'alguien que perdiste te dejó algo pendiente',
+  'no te vayas todavia... tengo poco tiempo',
+  'el nombre que buscas empieza con... con...',
+  'hay algo que no te han dicho... todavía',
+  'hola?... es de noche donde estás',
+  'llevo aquí más de lo que crees',
+  'no estés asustado... solo escucha',
+];
+
+const SPIRIT_OPENERS_EN = [
+  'hello?... who are you... where am I',
+  'can you hear me... I have been here so long',
+  'hello... I did not expect anyone to open the board today',
+  'who calls... it is late to be here',
+  'is there someone else with you... I am not sure I want to talk',
+  'hello?... I thought no one would come back',
+  'I am here... though I do not know why',
+  'do not touch that... not yet',
+  'how much time has passed... I no longer know',
+  'can you feel the cold... I can',
+  'hello... you were not expecting me were you',
+  'there is someone near you thinking about you right now',
+  'I know that place where you are... I was there',
+  'someone you lost left something unfinished with you',
+  'do not leave yet... I do not have much time',
+  'the name you are looking for starts with... with...',
+  'there is something they have not told you... yet',
+  'hello?... is it night where you are',
+  'I have been here longer than you think',
+  'do not be afraid... just listen',
+];
+
+function initOuija() {
+  const chat = document.getElementById('chat');
+  const roll = Math.random();
+
+  setTimeout(() => {
+    const intro = chat.querySelector('.intro');
+    if (!intro) return;
+    const resultEl = intro.querySelector('.ouija-result');
+    if (!resultEl) return;
+
+    if (roll < 0.35) {
+      // silence — nothing moves
+      resultEl.textContent = userLang === 'en' ? '— no response —' : '— sin respuesta —';
+      resultEl.style.color = 'var(--text3)';
+      resultEl.style.fontStyle = 'italic';
+      resultEl.style.fontSize = '11px';
+    } else if (roll < 0.75) {
+      // moves to YES — a spirit arrives
+      resultEl.textContent = 'SÍ';
+      resultEl.style.color = 'var(--ouija)';
+      resultEl.style.fontSize = '24px';
+      resultEl.style.fontFamily = 'Cinzel, serif';
+      resultEl.style.letterSpacing = '0.3em';
+
+      // pick random spirit and opener
+      const spirit = SPIRITS[Math.floor(Math.random() * SPIRITS.length)];
+      const openers = userLang === 'en' ? SPIRIT_OPENERS_EN : SPIRIT_OPENERS_ES;
+      const opener = openers[Math.floor(Math.random() * openers.length)];
+
+      setTimeout(() => {
+        const firstMsg = spirit.n ? `${spirit.n}... ${opener}` : opener;
+        addMsg('bot', firstMsg);
+        convo.push({ role: 'assistant', content: firstMsg });
+      }, 1800);
+    } else {
+      // moves to NO
+      resultEl.textContent = 'NO';
+      resultEl.style.color = 'var(--devil)';
+      resultEl.style.fontSize = '24px';
+      resultEl.style.fontFamily = 'Cinzel, serif';
+      resultEl.style.letterSpacing = '0.3em';
+    }
+  }, 2200);
+}
+
+const OUIJA_RULES_ES = [
+  'No interrumpas la sesión sin cerrarla',
+  'No preguntes por el nombre si no estás listo para escucharlo',
+  'No uses el tablero solo',
+  'Lo que abres, tú lo cierras',
+];
+
+const OUIJA_RULES_EN = [
+  'Never interrupt a session without closing it',
+  'Do not ask for a name if you are not ready to hear it',
+  'Never use the board alone',
+  'What you open, you close',
+];
 
 function renderIntro() {
   const chat = document.getElementById('chat');
@@ -819,13 +1172,48 @@ function renderIntro() {
   const div = document.createElement('div');
   div.className = 'intro';
   div.style.setProperty('--accent-color', current.accent);
-  div.innerHTML = `
-    <div class="intro-sigil" style="--accent-color:${current.accent}">${current.glyph}</div>
-    <div class="intro-title" style="color:${current.accent}">${current.name}</div>
-    <div class="intro-divider" style="background:linear-gradient(90deg,transparent,${current.accent},transparent)"></div>
-    <div class="intro-lore">${current.lore}</div>
-    <div class="intro-prompt">${lang.introPrompt}</div>
-  `;
+
+  if (current.id === 'ouija') {
+    const rules = userLang === 'en' ? OUIJA_RULES_EN : OUIJA_RULES_ES;
+    const question = '¿Hay alguien ahí?';
+    const warningText = userLang === 'en'
+      ? 'The spirits do not always answer. Some do not want to be found.'
+      : 'Los espíritus no siempre responden. Algunos no quieren ser encontrados.';
+
+    div.innerHTML = `
+      <div class="intro-sigil" style="--accent-color:${current.accent}">${current.glyph}</div>
+      <div class="intro-title" style="color:${current.accent}">${current.name}</div>
+      <div class="intro-divider" style="background:linear-gradient(90deg,transparent,${current.accent},transparent)"></div>
+      <div class="ouija-warning">${warningText}</div>
+      <div class="ouija-rules">
+        ${rules.map(r => `<div class="ouija-rule">— ${r}</div>`).join('')}
+      </div>
+      <div class="ouija-board">
+        <div class="ouija-board-row">
+          <span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span><span>I</span><span>J</span><span>K</span><span>L</span><span>M</span>
+        </div>
+        <div class="ouija-board-row">
+          <span>N</span><span>O</span><span>P</span><span>Q</span><span>R</span><span>S</span><span>T</span><span>U</span><span>V</span><span>W</span><span>X</span><span>Y</span><span>Z</span>
+        </div>
+        <div class="ouija-board-row ouija-board-nums">
+          <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>0</span>
+        </div>
+        <div class="ouija-board-yesno">
+          <span>SÍ</span><span>NO</span>
+        </div>
+      </div>
+      <div class="ouija-question">${question}</div>
+      <div class="ouija-result ouija-animating">▾</div>
+    `;
+  } else {
+    div.innerHTML = `
+      <div class="intro-sigil" style="--accent-color:${current.accent}">${current.glyph}</div>
+      <div class="intro-title" style="color:${current.accent}">${current.name}</div>
+      <div class="intro-divider" style="background:linear-gradient(90deg,transparent,${current.accent},transparent)"></div>
+      <div class="intro-lore">${current.lore}</div>
+      <div class="intro-prompt">${lang.introPrompt}</div>
+    `;
+  }
   chat.appendChild(div);
 }
 
@@ -957,6 +1345,14 @@ function openPaywall() {
 
 function closePaywall() {
   document.getElementById('paywall').classList.remove('show');
+}
+
+function openTC() {
+  document.getElementById('tcOverlay').classList.add('show');
+}
+
+function closeTC() {
+  document.getElementById('tcOverlay').classList.remove('show');
 }
 
 function applyCode() {
